@@ -2,24 +2,24 @@ import React from "react";
 
 export function Footer() {
   return (
-    <footer class="bg-white rounded-lg mt-3 shadow dark:bg-neutral-800 p-1">
-      <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+    <footer className="bg-white rounded-lg mt-3 shadow dark:bg-neutral-800 p-1">
+      <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
           ©{" "}
           <a
             href="https://prasanth-simplifolio.netlify.app/"
-            class="hover:underline">
+            className="hover:underline">
             Amulya Prasanth
           </a>
           . All Rights Reserved.
         </span>
-        <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+        <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
           <li>
             <a
               href="https://github.com/amulyaprasanth/pdf_rag_chain"
-              class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400">
+              className="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400">
               <svg
-                class="w-10 h-10"
+                className="w-10 h-10"
                 fill="currentColor"
                 viewBox="0 0 24 24"
                 aria-hidden="true">

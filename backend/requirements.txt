@@ -4,9 +4,8 @@ langchain_community
 langchain_ollama
 langchain_text_splitters
 pymupdf
-jupyter
 pytest
 faiss-cpu
-fastapi
+fastapi[standard]
 uvicorn
 python-multipart

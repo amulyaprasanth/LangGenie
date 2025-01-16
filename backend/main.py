@@ -48,7 +48,6 @@ async def upload(file: UploadFile = File(...)):
         # Load the file using RagPdf
         pages = rag_pdf.load_file(contents)
 
-        print("pdf loaded")
         # Store the vector store in the shared variable
         shared_variable["retriever"] = rag_pdf.split_and_store_documents(pages)
 
