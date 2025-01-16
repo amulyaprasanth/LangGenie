@@ -6,7 +6,7 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from typing import List, Optional
 from langchain_core.prompts import PromptTemplate
-import os
+from io import BytesIO
 
 
 class RagPdf:
@@ -14,37 +14,46 @@ class RagPdf:
         """
         Initializes the RagPdf instance with necessary components for processing PDF files.
         """
-        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        self.text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000, chunk_overlap=200)
         self.embeddings = OllamaEmbeddings(model="llama3.1")
         self.llm = OllamaLLM(model='llama3.1')
         self.chain: Optional[RetrievalQA] = None
 
-    def load_file(self, file_path: str) -> List[str]:
+    def load_file(self, file_stream: bytes) -> List[str]:
         """
-        Loads a PDF file from the given file path and extracts text from each page.
+
+        Loads a PDF file from the given byte stream and extracts text from each page.
+
 
         Args:
-            file_path (str): The path of the PDF file to be loaded.
+
+            file_stream (BytesIO): The byte stream of the PDF file to be loaded.
+
 
         Returns:
-            List[str]: A list of strings, each representing the text of a page.
 
+            List[str]: A list of strings, each representing the text of a page.
         Raises:
-            FileNotFoundError: If the specified file does not exist.
-            Exception: For any other errors that occur during file processing.
+            Exception: For any errors that occur during file processing.
+
         """
         pages: List[str] = []
 
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"The file at {file_path} does not exist.")
-
         try:
-            doc = open(file_path)
+
+            doc = open(None, stream=file_stream)
+
             for page in doc:  # Iterate through document pages
-                text = page.get_text()  # get plain text (is in UTF-8)
+
+                text = page.get_text()  # ignore
+
                 pages.append(text)
+
         except Exception as e:
-            raise Exception(f"An error occurred while loading the PDF file: {e}")
+
+            raise Exception(
+                f"An error occurred while loading the PDF file: {e}")
 
         return pages
 
@@ -84,22 +93,23 @@ class RagPdf:
         """
         # Creating Prompt
         prompt_template: str = (
-                "Use the following pieces of context to answer the question at the end. "
-                "If you don't know the answer, just say that you don't know; don't try to make up an answer.\n\n"
-                "{context}\n\n"
-                "Question: {question}\n"
-                "Provide a concise answer in 1-4 sentences:"
+            "Use the following pieces of context to answer the question at the end. "
+            "If you don't know the answer, just say that you don't know; don't try to make up an answer.\n\n"
+            "{context}\n\n"
+            "Question: {question}\n"
+            "Provide a concise answer in 1-4 sentences:"
         )
 
-        prompt: PromptTemplate = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+        prompt: PromptTemplate = PromptTemplate(
+            template=prompt_template, input_variables=["context", "question"])
 
         # Create a RaG chain
         qa_chain: RetrievalQA = RetrievalQA.from_chain_type(
-                llm=self.llm,
-                chain_type="stuff",
-                retriever=retriever,
-                return_source_documents=False,
-                chain_type_kwargs={"prompt": prompt}
+            llm=self.llm,
+            chain_type="stuff",
+            retriever=retriever,
+            return_source_documents=False,
+            chain_type_kwargs={"prompt": prompt}
         )
 
         return qa_chain
@@ -116,11 +126,3 @@ class RagPdf:
             str: The result of the chain's response to the question.
         """
         return chain.invoke({"query": question})['result']
-
-
-if __name__ == '__main__':
-    rag = RagPdf()
-    pages  = rag.load_file("D:\\Downloads\\Documents\\NadaganiAmulyaPrasanthResume_2.pdf")
-    retriever = rag.split_and_store_documents(pages)
-    chain = rag.create_chain(retriever)
-    print(rag.invoke_chain(chain, "What is the educational background of the person?"))
