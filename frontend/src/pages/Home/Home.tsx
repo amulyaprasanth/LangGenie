@@ -1,5 +1,5 @@
-import React from "react";
 import "./Home.css";
+import {ServiceCarousal} from "../../components/ServiceCarousal/ServiceCarousal";
 
 export const Home = () => {
     return (
@@ -16,6 +16,9 @@ export const Home = () => {
                     navigate academic papers, articles, and research materials. Whether you're diving deep into a
                     subject or looking for quick insights, LangGenie provides seamless access to knowledge, helping you
                     stay focused and informed in your research journey.</p>
+            </div>
+            <div>
+                <ServiceCarousal/>
             </div>
         </div>
     );
