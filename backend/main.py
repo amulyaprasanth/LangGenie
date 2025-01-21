@@ -1,9 +1,8 @@
-from source.rag import RagPdf, VectorStoreRetriever
 from typing import Optional
+from source.rag import RagPdf, VectorStoreRetriever
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from source.rag import RagPdf
 from source.tool_agent import  ToolAgent
 app = FastAPI()
 
@@ -84,7 +83,7 @@ async def query(question: Query):
 @app.post('/query_tool')
 async def query_tool(query: Query):
     try:
-        response = tool_agent.invoke_agent(query)
+        response = tool_agent.invoke_agent(query.question)
         return {
             "answer": response["output"]
         }

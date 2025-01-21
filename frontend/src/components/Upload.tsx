@@ -26,7 +26,10 @@ export const Upload: React.FC<UploadProps> = ({onFileUpload}) => {
         setError(null); // Clear any previous error
 
         try {
-            const response = await axios.post("http://localhost:8000/upload", formData);
+            const response = await axios.post(
+              "https://langgenie-backend-latest.onrender.com/upload",
+              formData
+            );
             const data = await response.data;
             console.log(data);
             onFileUpload(); // Notify parent component

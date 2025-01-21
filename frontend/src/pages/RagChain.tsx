@@ -41,7 +41,10 @@ export const RagChain = () => {
         setIsThinking(true);
 
         try {
-            const response = await axios.post("http://localhost:8000/query", {"question": query});
+            const response = await axios.post(
+              "https://langgenie-backend-latest.onrender.com/query",
+              { question: query }
+            );
             const assistantMessage: Message = {
                 role: "bot",
                 message: response.data.answer,
@@ -88,7 +91,7 @@ export const RagChain = () => {
                         type="text"
                         value={query}
                         onChange={onChange}
-                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyPress}
                         placeholder="Ask a question..."
                         className="border p-2 rounded w-1/2"
                     />
