@@ -1,17 +1,6 @@
 version: '3.3'
 
 services:
-  ollama:
-    build:
-      context: ./ollama/
-      dockerfile: ./Dockerfile
-    ports:
-      - '11434:11434'
-    entrypoint: [ "/usr/bin/bash", "/pull-llama3.sh" ]
-    networks:
-      - ollama-net
-    image: amulyaprasanth/ollama_llama3.1
-
   backend:
     build:
       context: ./backend/
@@ -19,8 +8,6 @@ services:
     ports:
       - '8000:8000'
     
-    networks:
-      - ollama-net
     
     image: amulyaprasanth/langgenie_backend_ollama
 
@@ -33,10 +20,6 @@ services:
 
     image: amulyaprasanth/langgenie_frontend_ollama
 
-
-networks:
-  ollama-net:
-    driver: bridge
 
 
   

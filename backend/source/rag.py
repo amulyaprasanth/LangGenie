@@ -5,10 +5,14 @@ from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import PromptTemplate
 from langchain_core.vectorstores import VectorStoreRetriever
-from langchain_ollama import OllamaEmbeddings, OllamaLLM
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pymupdf import open
 
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 class RagPdf:
     def __init__(self) -> None:
@@ -18,10 +22,10 @@ class RagPdf:
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000, chunk_overlap=200
         )
-        self.embeddings = OllamaEmbeddings(
-            model="llama3.1", base_url="http://ollama:11434"
-        )
-        self.llm = OllamaLLM(model="llama3.1", base_url="http://ollama:11434")
+        self.embeddings = FastEmbedEmbeddings(
+            model_name="BAAI/bge-base-en-v1.5")
+        # Initialize the language model
+        self.llm = ChatGroq(model="llama-3.1-8b-instant")
         self.chain: Optional[RetrievalQA] = None
 
     def load_file(self, file_stream: bytes) -> List[str]:

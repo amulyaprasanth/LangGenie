@@ -5,7 +5,11 @@ from langchain_community.tools import (
 )
 from langchain_community.utilities import ArxivAPIWrapper, WikipediaAPIWrapper
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+import os
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
 
 
 class ToolAgent:
@@ -15,8 +19,9 @@ class ToolAgent:
         Sets up the language model and the prompt template for the agent.
         """
         # Initialize tools with their respective API wrappers
-        wikipedia_api = WikipediaAPIWrapper(top_k_results=1)
-        arxiv_api = ArxivAPIWrapper(top_k_results=1)
+        wikipedia_api = WikipediaAPIWrapper(
+            top_k_results=1, doc_content_chars_max=200)
+        arxiv_api = ArxivAPIWrapper(top_k_results=1, doc_content_chars_max=200)
         self.wikipedia = WikipediaQueryRun(api_wrapper=wikipedia_api)
         self.arxiv = ArxivQueryRun(
             api_wrapper=arxiv_api,
@@ -39,7 +44,7 @@ class ToolAgent:
         )
 
         # Initialize the language model
-        self.llm = ChatOllama(model="llama3.1", base_url="http://ollama:11434")
+        self.llm = ChatGroq(model="llama-3.1-8b-instant")
 
     def invoke_agent(self, query: str) -> dict:
         """
@@ -53,7 +58,8 @@ class ToolAgent:
         """
         try:
             # Create the agent using the LLM, tools, and prompt
-            agent = create_tool_calling_agent(self.llm, self.tools, self.prompt)
+            agent = create_tool_calling_agent(
+                self.llm, self.tools, self.prompt)
 
             # Create agent executor
             agent_executor = AgentExecutor(
