@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   backend:
@@ -6,20 +6,17 @@ services:
       context: ./backend/
       dockerfile: ./Dockerfile
     ports:
-      - '8000:8000'
-    
-    
-    image: amulyaprasanth/langgenie_backend_ollama
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+
+    image: amulyaprasanth/langgenie_backend
 
   app:
     build:
       context: ./frontend/
       dockerfile: ./Dockerfile
     ports:
-      - '3000:3000'
+      - "8080:8080"
 
-    image: amulyaprasanth/langgenie_frontend_ollama
-
-
-
-  
+    image: amulyaprasanth/langgenie_frontend
