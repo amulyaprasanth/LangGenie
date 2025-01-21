@@ -2,17 +2,17 @@ import React, {useEffect, useRef} from 'react';
 import Bot from "../assets/bot.png";
 
 interface Message {
-    role: 'user' | 'bot'; // Restricting role to 'user' or 'bot'
+    role: 'user' | 'bot';
     message: string;
     time: string;
 }
 
-export interface ChatContainerProps {
+export interface ToolChatProps {
     messages: Message[];
     isThinking: boolean;
 }
 
-export const ChatContainer: React.FC<ChatContainerProps> = ({messages, isThinking}) => {
+export const ToolChat: React.FC<ToolChatProps> = ({messages, isThinking}) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -22,13 +22,13 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({messages, isThinkin
     }, [messages, isThinking]);
 
     if (messages.length === 0 && !isThinking) {
-        return null; // Do not render the container if there are no messages and not thinking
+        return null;
     }
 
     return (
         <div ref={containerRef}
              className="chat-container p-4 bg-gray-900 rounded-lg shadow-md max-w-2xl mx-auto overflow-y-auto max-h-96">
-            <div className="header text-lg font-bold mb-4 roboto-normal">QnA Bot</div>
+            <div className="header text-lg font-bold mb-4 roboto-normal">WikiArXiv Agent</div>
             {messages.map((msg, index) => (
                 <div key={index}
                      className={`flex items-end gap-2 mb-4 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>

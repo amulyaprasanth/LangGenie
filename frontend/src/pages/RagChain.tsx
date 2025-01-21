@@ -1,6 +1,6 @@
 import {Upload} from "../components/Upload";
 import {ChatContainer} from "../components/ChatContainer";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useState, useEffect, useRef} from "react";
 import axios from "axios";
 
 export interface Message {
@@ -12,6 +12,15 @@ export interface Message {
 export const RagChain = () => {
     const [query, setQuery] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
+    const [isFileUploaded, setIsFileUploaded] = useState<boolean>(false);
+    const [isThinking, setIsThinking] = useState<boolean>(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+    }, [messages, isThinking]);
 
     function onChange(e: ChangeEvent<HTMLInputElement>) {
         if (e.target) {
@@ -29,6 +38,7 @@ export const RagChain = () => {
         };
 
         setMessages(prevMessages => [...prevMessages, userMessage]);
+        setIsThinking(true);
 
         try {
             const response = await axios.post("http://localhost:8000/query", {"question": query});
@@ -41,6 +51,7 @@ export const RagChain = () => {
         } catch (error) {
             console.error("Error occurred while querying the backend:", error);
         } finally {
+            setIsThinking(false);
             setQuery(""); // Clear the input field after sending the query
         }
     };
@@ -55,33 +66,40 @@ export const RagChain = () => {
         }
     };
 
+    const handleFileUpload = () => {
+        setIsFileUploaded(true);
+    };
+
     return (
-        <div className="mt-10 h-screen w-screen text-center">
+        <div className="bg-slate-800 pt-10 min-h-screen w-screen text-center">
             <div id="file-upload" className="">
                 <h1 className="text-2xl">DocQnA</h1>
                 <p className="m-5">Upload a PDF page, and then you can ask questions about it using the LLaMA 3.1
                     model.</p>
-                <Upload/>
+                <Upload onFileUpload={handleFileUpload}/>
             </div>
-            <div className="mt-5">
-                <ChatContainer messages={messages}/> {/* Pass messages to ChatContainer */}
+            <div className="mt-5" ref={containerRef}>
+                <ChatContainer messages={messages}
+                               isThinking={isThinking}/> {/* Pass messages and isThinking to ChatContainer */}
             </div>
-            <div className="mt-5">
-                <input
-                    type="text"
-                    value={query}
-                    onChange={onChange}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Ask a question..."
-                    className="border p-2 rounded w-1/2"
-                />
-                <button
-                    onClick={handleClick}
-                    className="p-2 px-5 ml-2 bg-blue-800 hover:bg-blue-500 text-white rounded"
-                >
-                    Ask
-                </button>
-            </div>
+            {isFileUploaded && (
+                <div className="mt-5">
+                    <input
+                        type="text"
+                        value={query}
+                        onChange={onChange}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Ask a question..."
+                        className="border p-2 rounded w-1/2"
+                    />
+                    <button
+                        onClick={handleClick}
+                        className="p-2 px-5 ml-2 bg-blue-800 hover:bg-blue-500 text-white rounded"
+                    >
+                        Ask
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
