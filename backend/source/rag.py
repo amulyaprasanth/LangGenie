@@ -1,13 +1,18 @@
-from langchain_core.vectorstores import VectorStoreRetriever
-from pymupdf import open
-from langchain_ollama import OllamaEmbeddings, OllamaLLM
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain.chains import RetrievalQA
-from typing import List, Optional
-from langchain_core.prompts import PromptTemplate
 from io import BytesIO
+from typing import List, Optional
 
+from langchain.chains import RetrievalQA
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import PromptTemplate
+from langchain_core.vectorstores import VectorStoreRetriever
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from pymupdf import open
+
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 class RagPdf:
     def __init__(self) -> None:
@@ -15,11 +20,12 @@ class RagPdf:
         Initializes the RagPdf instance with necessary components for processing PDF files.
         """
         self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=200)
-        self.embeddings = OllamaEmbeddings(
-            model="llama3", base_url="http://ollama:11434")
-        self.llm = OllamaLLM(
-            model='llama3', base_url="http://ollama:11434")
+            chunk_size=1000, chunk_overlap=200
+        )
+        self.embeddings = FastEmbedEmbeddings(
+            model_name="BAAI/bge-base-en-v1.5")
+        # Initialize the language model
+        self.llm = ChatGroq(model="llama-3.1-8b-instant")
         self.chain: Optional[RetrievalQA] = None
 
     def load_file(self, file_stream: bytes) -> List[str]:
@@ -54,8 +60,7 @@ class RagPdf:
 
         except Exception as e:
 
-            raise Exception(
-                f"An error occurred while loading the PDF file: {e}")
+            raise Exception(f"An error occurred while loading the PDF file: {e}")
 
         return pages
 
@@ -103,7 +108,8 @@ class RagPdf:
         )
 
         prompt: PromptTemplate = PromptTemplate(
-            template=prompt_template, input_variables=["context", "question"])
+            template=prompt_template, input_variables=["context", "question"]
+        )
 
         # Create a RaG chain
         qa_chain: RetrievalQA = RetrievalQA.from_chain_type(
@@ -111,7 +117,7 @@ class RagPdf:
             chain_type="stuff",
             retriever=retriever,
             return_source_documents=False,
-            chain_type_kwargs={"prompt": prompt}
+            chain_type_kwargs={"prompt": prompt},
         )
 
         return qa_chain
@@ -127,4 +133,4 @@ class RagPdf:
         Returns:
             str: The result of the chain's response to the question.
         """
-        return chain.invoke({"query": question})['result']
+        return chain.invoke({"query": question})["result"]

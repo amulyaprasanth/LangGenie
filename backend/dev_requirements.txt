@@ -1,0 +1,14 @@
+langchain
+langchain_core
+langchain-community
+fastembed
+langchain-text-splitters
+Wikipedia
+arxiv
+pymupdf
+faiss-cpu
+fastapi[standard]
+uvicorn
+python-multipart
+jupyter
+pytest

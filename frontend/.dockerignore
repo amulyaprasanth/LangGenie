@@ -1,0 +1,10 @@
+.dockerignore
+Dockerfile
+docker-compose.yml
+.qodo/
+.idea/
+.git
+.gitignore
+
+node_modules
+.env
