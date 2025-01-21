@@ -1,10 +1,10 @@
+from source.rag import RagPdf, VectorStoreRetriever
+from typing import Optional
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from source.rag import RagPdf
-
-
-
+from source.tool_agent import  ToolAgent
 app = FastAPI()
 
 # Add CORS middleware
@@ -18,10 +18,8 @@ app.add_middleware(
 
 )
 rag_pdf = RagPdf()
-
+tool_agent = ToolAgent()
 # Define a variable that can be accessed across all endpoints
-from typing import Optional
-from source.rag import RagPdf, VectorStoreRetriever
 
 shared_variable: dict[str, Optional[VectorStoreRetriever]] = {
     "retriever": None
@@ -31,12 +29,14 @@ shared_variable: dict[str, Optional[VectorStoreRetriever]] = {
 class Message(BaseModel):
     message: str
 
+
 class Query(BaseModel):
     question: str
 
+
 @app.post("/echo")
 async def echo(message: Message):
-    return {"message": message.message}
+    return {"message": f"Echo:{message.message}"}
 
 
 @app.post('/upload')
@@ -65,7 +65,8 @@ async def query(question: Query):
         retriever = shared_variable["retriever"]
 
         if retriever is None:
-            raise HTTPException(status_code=400, detail="Please upload a file first")
+            raise HTTPException(
+                status_code=400, detail="Please upload a file first")
 
         # Create a chain
         chain = rag_pdf.create_chain(retriever)
@@ -75,6 +76,17 @@ async def query(question: Query):
 
         return {
             "answer": answer
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post('/query_tool')
+async def query_tool(query: Query):
+    try:
+        response = tool_agent.invoke_agent(query)
+        return {
+            "answer": response["output"]
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

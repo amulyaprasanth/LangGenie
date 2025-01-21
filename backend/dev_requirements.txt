@@ -1,8 +1,8 @@
 langchain
 langchain_core
-langchain_community
-langchain_ollama
-langchain_text_splitters
+langchain-community
+langchain-ollama
+langchain-text-splitters
 Wikipedia
 arxiv
 pymupdf
@@ -11,3 +11,4 @@ fastapi[standard]
 uvicorn
 python-multipart
 jupyter
+pytest

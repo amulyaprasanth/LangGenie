@@ -17,9 +17,9 @@ class RagPdf:
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000, chunk_overlap=200)
         self.embeddings = OllamaEmbeddings(
-            model="llama3", base_url="http://ollama:11434")
+            model="llama3.1")
         self.llm = OllamaLLM(
-            model='llama3', base_url="http://ollama:11434")
+            model='llama3.1')
         self.chain: Optional[RetrievalQA] = None
 
     def load_file(self, file_stream: bytes) -> List[str]:
