@@ -39,7 +39,7 @@ class ToolAgent:
         )
 
         # Initialize the language model
-        self.llm = ChatOllama(model="llama3.1")
+        self.llm = ChatOllama(model="llama3.1", base_url="http://ollama:11434")
 
     def invoke_agent(self, query: str) -> dict:
         """
@@ -53,8 +53,7 @@ class ToolAgent:
         """
         try:
             # Create the agent using the LLM, tools, and prompt
-            agent = create_tool_calling_agent(
-                self.llm, self.tools, self.prompt)
+            agent = create_tool_calling_agent(self.llm, self.tools, self.prompt)
 
             # Create agent executor
             agent_executor = AgentExecutor(
