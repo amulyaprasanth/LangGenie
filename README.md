@@ -1,4 +1,4 @@
-#Langgenie: WikiArxiv Explorer and DocQnA for PDFs
+# Langgenie: WikiArxiv Explorer and DocQnA for PDFs
 
 Langgenie is a web application that allows users to explore the vast amount of information available on arXiv and ask questions about PDFs using DocQnA. It is built using Langchain, a powerful library for natural language processing tasks.
 
