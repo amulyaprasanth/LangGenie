@@ -82,4 +82,3 @@ We welcome contributions to Langgenie! If you have any bug fixes, improvements, 
 
 Langgenie is licensed under the MIT License. See the LICENSE file for more details.
 
-This readme file now includes the specific steps for running the backend, making it more user-friendly and informative.
