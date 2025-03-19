@@ -11,7 +11,7 @@ COPY . /app
 RUN pip install poetry
 
 # Install the dependencies
-RUN poetry install --no-dev
+RUN poetry install --without dev
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
