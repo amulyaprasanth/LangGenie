@@ -24,6 +24,6 @@ jobs:
 
             - name: Push Docker Image to Hub
               run: |
-                    docker push your-dockerhub-username/your-image-name:latest
-                    docker push your-dockerhub-username/your-image-name:${{ github.sha }}
+                    docker push amulyaprasanth/langgenie_backend:latest
+                    docker push amulyaprasanth/langgenie_backend::${{ github.sha }}
             
