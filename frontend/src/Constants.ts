@@ -1,6 +1,6 @@
 const prod = {
     url: {
-        BASE_URL: 'https://langgenie-backend-latest.onrender.com'
+        BASE_URL: 'https://langgenie-backend.onrender.com'
     }
 
 }
