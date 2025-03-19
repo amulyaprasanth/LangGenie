@@ -1,9 +1,9 @@
 from typing import Optional
-from source.rag import RagPdf, VectorStoreRetriever
+from langgenie_backend.rag import RagPdf, VectorStoreRetriever
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from source.tool_agent import  ToolAgent
+from langgenie_backend .tool_agent import  ToolAgent
 app = FastAPI()
 
 # Add CORS middleware
@@ -33,9 +33,9 @@ class Query(BaseModel):
     question: str
 
 
-@app.post("/echo")
-async def echo(message: Message):
-    return {"message": f"Echo:{message.message}"}
+@app.get("/health")
+async def echo():
+    return {"message": f"The server is healthy..."}
 
 
 @app.post('/upload')
