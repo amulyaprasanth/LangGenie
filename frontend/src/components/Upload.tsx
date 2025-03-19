@@ -1,6 +1,8 @@
 import {ChangeEvent, useState} from "react";
 import axios from "axios";
+import { config} from '../Constants';
 
+const url = config.url.BASE_URL
 interface UploadProps {
     onFileUpload: () => void;
 }
@@ -27,7 +29,7 @@ export const Upload: React.FC<UploadProps> = ({onFileUpload}) => {
 
         try {
             const response = await axios.post(
-              "https://langgenie-backend-latest.onrender.com/upload",
+            `${url}/upload`,
               formData
             );
             const data = await response.data;

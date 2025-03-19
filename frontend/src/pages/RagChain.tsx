@@ -2,6 +2,9 @@ import {Upload} from "../components/Upload";
 import {ChatContainer} from "../components/ChatContainer";
 import {ChangeEvent, KeyboardEvent, useState, useEffect, useRef} from "react";
 import axios from "axios";
+import {config} from "../Constants";
+
+const url = config.url.BASE_URL
 
 export interface Message {
     role: 'user' | 'bot'; // Restricting role to 'user' or 'bot'
@@ -42,7 +45,7 @@ export const RagChain = () => {
 
         try {
             const response = await axios.post(
-              "https://langgenie-backend-latest.onrender.com/query",
+              `${url}/query`,
               { question: query }
             );
             const assistantMessage: Message = {

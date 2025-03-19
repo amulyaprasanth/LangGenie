@@ -1,7 +1,9 @@
 import { ToolChat } from "../components/ToolChat.tsx";
 import { ChangeEvent, KeyboardEvent, useState, useEffect, useRef } from "react";
 import axios from "axios";
+import {config} from "../Constants";
 
+const url = config.url.BASE_URL
 export interface Message {
   role: "user" | "bot";
   message: string;
@@ -34,7 +36,7 @@ export const ToolAgent = () => {
 
     try {
       const response = await axios.post(
-        "https://langgenie-backend-latest.onrender.com/query_tool",
+        `${url}/query_tool`,
         { question: query }
       );
       const assistantMessage: Message = {
