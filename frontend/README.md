@@ -1,50 +1,100 @@
-# React + TypeScript + Vite
+# LangGenie Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the frontend of **LangGenie**, a dynamic AI-powered language generation and translation platform. This repository houses the user interface (UI) built with modern web technologies to ensure a smooth and engaging experience for end-users.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* 🌐 **Intuitive UI**: Clean and responsive design.
+* ⚡️ **Fast and Interactive**: Built with modern frameworks for performance and reliability.
+* 🤖 **Connects with AI Models**: Seamlessly integrates with the LangGenie backend to enable real-time language generation and translation.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+* **React**: UI library for building interactive and dynamic interfaces.
+* **Tailwind CSS**: Utility-first CSS framework for styling.
+* **Axios**: Handling API requests to the backend.
+* **Vite**: Super-fast build tool for modern web projects.
 
-- Configure the top-level `parserOptions` property like this:
+## 📦 Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/amulyaprasanth/LangGenie.git
+   cd LangGenie/frontend
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Start the development server:**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+   The app will be running at [http://localhost:5173](http://localhost:5173).
+
+## ⚙️ Configuration
+
+* The frontend uses environment variables to configure API endpoints and other settings. Create a `.env` file in the `frontend` directory with the following example content:
+
+  ```env
+  VITE_API_URL=http://localhost:8000
+  ```
+
+  Adjust the `VITE_API_URL` to point to your backend server.
+
+## 📁 Project Structure
+
+```
+frontend/
+├── public/          # Static assets
+├── src/             # Source code
+│   ├── assets/      # Images and icons
+│   ├── components/  # Reusable components
+│   ├── pages/       # Application pages
+│   ├── services/    # API services
+│   ├── App.jsx      # Main app component
+│   ├── main.jsx     # Entry point
+│   └── ...          # Other modules
+├── tailwind.config.js  # Tailwind CSS configuration
+├── vite.config.js      # Vite configuration
+├── package.json        # Project metadata
+└── README.md           # Project documentation
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🧪 Testing
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+To ensure everything is working as expected, run:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run lint
 ```
+
+(Consider adding unit tests in the future for more comprehensive testing!)
+
+## 🏗️ Build for Production
+
+To generate an optimized production build:
+
+```bash
+npm run build
+```
+
+The build output will be in the `dist/` directory.
+
+## 🙌 Contributing
+
+Contributions are welcome! Please open issues and submit pull requests to help improve the project.
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
