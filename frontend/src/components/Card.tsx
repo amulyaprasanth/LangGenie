@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+
 interface CardProps {
     title: string;
     description: string;
@@ -5,6 +7,8 @@ interface CardProps {
 }
 
 export const Card = ({title, description, link}: CardProps) => {
+    let navigate = useNavigate();
+
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg m-4 bg-white">
             <div className="px-6 py-4">
@@ -12,12 +16,12 @@ export const Card = ({title, description, link}: CardProps) => {
                 <p className="text-gray-700 text-base">{description}</p>
             </div>
             <div className="px-6 pt-4 pb-2">
-                <a
-                    href={link}
+                <button
+                    onClick = {() => navigate(link)}
                     className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
                     Demo
-                </a>
+                </button>
             </div>
         </div>
     );

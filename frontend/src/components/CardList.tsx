@@ -10,12 +10,12 @@ export const CardList = () => {
         {
             title: "WikiArXiv Explore",
             description: "Effortlessly retrieve and explore knowledge from Wikipedia and ArXiv.",
-            link: `${url}/tool`
+            link: `/tool`
         },
         {
             title: "DocQnA",
             description: "Unlock answers directly from your PDFs with ease.",
-            link: `${url}/rag`
+            link: `/rag`
         }
     ];
 
