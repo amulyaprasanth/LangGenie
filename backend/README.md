@@ -40,6 +40,4 @@ Contributions are welcome! Feel free to open issues or submit pull requests to i
 ## License
 This project is licensed under the **MIT License**.
 
-## Contact
-For questions or support, please reach out to [Your Contact Information or GitHub Profile].
 
