@@ -1,7 +1,6 @@
 import {Card} from "./Card.tsx";
 import ScrollAnimation from "react-animate-on-scroll";
 import "animate.css/animate.compat.css";
-import {config} from "../Constants.ts";
 
 
 export const CardList = () => {

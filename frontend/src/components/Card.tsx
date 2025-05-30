@@ -7,7 +7,7 @@ interface CardProps {
 }
 
 export const Card = ({title, description, link}: CardProps) => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg m-4 bg-white">

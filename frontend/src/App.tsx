@@ -3,6 +3,7 @@ import {Navbar} from './components/Navbar.tsx';
 import {Home} from './pages/Home.tsx';
 import {ToolAgent} from './pages/ToolAgent';
 import {RagChain} from './pages/RagChain';
+import Footer from "./components/Footer.tsx";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/rag" element={<RagChain/>}/>
                 </Routes>
             </Router>
+            <Footer/>
         </div>
     );
 }
