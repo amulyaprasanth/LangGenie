@@ -26,7 +26,10 @@
 
   * Python
   * FastAPI
+  * LangChain
   * Hugging Face Transformers
+  * GROQ API for enhanced performance
+  * Wikipedia & ArXiv retrieval tools
 
 ---
 
@@ -54,6 +57,9 @@ The backend service is currently **not working** because of **free tier limitati
 
 * **Node.js** and **npm** (for the frontend)
 * **Python 3.9+** and **pip** (for the backend)
+* **Poetry** (for backend dependency management)
+
+---
 
 ### 🚀 Frontend Setup
 
@@ -71,17 +77,34 @@ yarn dev
 
 The frontend will be running at [http://localhost:5173](http://localhost:5173).
 
+---
+
 ### ⚙️ Backend Setup
 
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
+1. **Install Poetry (if not already installed):**
 
-# Start the FastAPI server
-uvicorn main:app --reload
-```
+   ```bash
+   pip install poetry
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   cd backend
+   poetry install
+   ```
+
+3. **Configure environment variables** (add your **GROQ API key** to your `.env` file or export it):
+
+   ```bash
+   export GROQ_API_KEY=your_api_key_here
+   ```
+
+4. **Run the backend app:**
+
+   ```bash
+   poetry run python app.py
+   ```
 
 The backend will be running at [http://localhost:8000](http://localhost:8000).
 
@@ -99,7 +122,11 @@ VITE_API_URL=http://localhost:8000
 
 ### Backend
 
-Create a `.env` file in the `backend` directory if needed to store API keys or environment-specific variables.
+Ensure your `.env` file (or exported variables) includes:
+
+```bash
+export GROQ_API_KEY=your_api_key_here
+```
 
 ---
 
