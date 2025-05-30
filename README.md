@@ -1,84 +1,156 @@
-# Langgenie: WikiArxiv Explorer and DocQnA for PDFs
+# LangGenie
 
-Langgenie is a web application that allows users to explore the vast amount of information available on arXiv and ask questions about PDFs using DocQnA. It is built using Langchain, a powerful library for natural language processing tasks.
+**LangGenie** is a cutting-edge AI-powered language generation and translation platform. It combines modern machine learning models with an intuitive user interface to help users generate and translate text effortlessly.
 
-**Features**
+---
 
-* **WikiArxiv Explorer:** Navigate and search through arXiv papers using a user-friendly interface.
-* **DocQnA for PDFs:** Ask questions in natural language about the content of uploaded PDFs and get relevant answers.
+## 🌟 Features
 
-**Deployment**
+* ✏️ **Language Generation**: Create natural, high-quality text with the help of advanced AI models.
+* 🌐 **Translation**: Translate text between multiple languages instantly.
+* ⚡️ **Seamless Integration**: Frontend and backend communicate smoothly for a real-time experience.
+* 🚀 **Modern Web Technologies**: Fast, responsive, and reliable user interface.
 
-A live demo of Langgenie is available at [https://langgenie.netlify.app/](https://langgenie.netlify.app/).
+---
 
-**Prerequisites**
+## 🏗️ Tech Stack
 
-* Node.js and npm (or yarn)
-* Python and pip
+* **Frontend**:
 
-**Installation**
+  * React
+  * Tailwind CSS
+  * Vite
+  * Axios
 
-1. Clone the repository:
+* **Backend**:
 
-   ```bash
-   git clone https://github.com/amulyaprasanth/LangGenie.git
-   ```
+  * Python
+  * FastAPI
+  * Hugging Face Transformers
 
-2. Navigate to the project directory:
+---
 
-   ```bash
-   cd langgenie
-   ```
+## 📂 Project Structure
 
-3. Install frontend dependencies:
+```
+LangGenie/
+├── frontend/         # React-based UI
+├── backend/          # FastAPI-powered backend
+├── LICENSE
+└── README.md         # Project documentation (this file)
+```
 
-   ```bash
-   cd frontend
-   npm install
-   ```
+---
 
-**Running the Application**
+## ⚠️ Note: Backend Service Unavailable
 
-1. **Start the frontend:**
+The backend service is currently **not working** because of **free tier limitations** on [Render.com](https://render.com). You can still explore the frontend locally or deploy your own backend instance using the provided code.
 
-   ```bash
-   npm run dev
-   ```
+---
 
-   This will start the frontend development server on http://localhost:5173 by default.
+## ⚙️ Installation
 
-2. **Start the backend:**
+### 🖥️ Prerequisites
 
-   ```bash
-   cd backend
-   pip install -r prod_requirements.txt 
-   uvicorn main:app 
-   ```
+* **Node.js** and **npm** (for the frontend)
+* **Python 3.9+** and **pip** (for the backend)
 
-   This will start the FastAPI backend server.
+### 🚀 Frontend Setup
 
-**Extra Information**
+```bash
+cd frontend
+npm install
+# or
+yarn install
 
-* **Ollama Branch:** The `ollama` branch contains the code to run the docker container with Ollama for the project. This allows for more efficient and customizable LLM processing on your local machine. 
+# Start development server
+npm run dev
+# or
+yarn dev
+```
 
-    * **To use Ollama:**
-        1. Checkout the `ollama` branch:
-           ```bash
-           git checkout ollama
-           ```
-        2. Follow the Ollama installation and setup instructions.
-        3. Run the Ollama docker container according to the instructions in the `ollama` branch.
-        4. Adjust the backend code to use the Ollama model instead of the default LLM.
+The frontend will be running at [http://localhost:5173](http://localhost:5173).
 
-* **Project Structure:**
-    * **frontend:** This directory contains the React application built as an npm vite package. It handles the user interface, interactions, and communication with the backend API endpoints.
-    * **backend:** This directory contains the backend logic implemented using FastAPI. It handles data processing, interaction with external services (like arXiv), and provides API endpoints for the frontend to consume.
+### ⚙️ Backend Setup
 
-**Contributing**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
 
-We welcome contributions to Langgenie! If you have any bug fixes, improvements, or new features, please feel free to submit a pull request.
+# Start the FastAPI server
+uvicorn main:app --reload
+```
 
-**License**
+The backend will be running at [http://localhost:8000](http://localhost:8000).
 
-Langgenie is licensed under the MIT License. See the LICENSE file for more details.
+---
 
+## 🌍 Environment Variables
+
+### Frontend
+
+Create a `.env` file in the `frontend` directory:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+### Backend
+
+Create a `.env` file in the `backend` directory if needed to store API keys or environment-specific variables.
+
+---
+
+## 🧪 Testing
+
+### Frontend
+
+```bash
+npm run lint
+```
+
+(Consider adding unit tests for better code coverage.)
+
+### Backend
+
+You can use tools like **pytest** to add automated tests for the backend API.
+
+---
+
+## ⚡ Build for Production
+
+### Frontend
+
+```bash
+npm run build
+```
+
+The production-ready frontend build will be generated in the `frontend/dist` directory.
+
+---
+
+## 🙌 Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request with a detailed explanation.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 📞 Contact
+
+For questions, feel free to open an issue on [GitHub](https://github.com/amulyaprasanth/LangGenie).
+
+---
+
+**Enjoy using LangGenie! Let us know how we can improve.**
