@@ -1,7 +1,10 @@
-import Navbar from "@/app/Navbar/page";
+import Landing from "@/app/Landing/page";
 
 export default function Home () {
   return (
-      <div> <Navbar/></div>
+      <div className='m-0 p-0 select-none'>
+          <Landing/>
+      </div>
+
   )
 }

@@ -9,7 +9,7 @@ export default function Navbar () {
         setIsOpen(prev => !prev);
         }
     return (
-        <div className="select-none sticky">
+        <div className="fixed top-0 z-50 w-full shadow-md" >
             <div className='w-full bg-slate-800 h-20 flex items-center justify-between z-10'>
                 <div className="flex items-center">
                     <Image  src='/logo.png'
@@ -38,13 +38,13 @@ export default function Navbar () {
 const Dropdown = () => {
     return (
         <div className="absolute top-15 right-0 mr-3 bg-slate-400 rounded-xl text-black px-8 py-2 flex flex-col items-center z-20">
-            <p className="w-full py-2 text-center hover:border-b-2 hover:border-black transition-all cursor-pointer">
+            <p className="w-full py-2 text-center hover:border-b-2 hover:border-amber-500 transition-all cursor-pointer">
                 About
             </p>
-            <p className="w-full py-2 text-center hover:border-b-2 hover:border-black transition-all cursor-pointer">
+            <p className="w-full py-2 text-center hover:border-b-2 hover:border-amber-500 transition-all cursor-pointer">
                 Contact
             </p>
-            <p className="w-full py-2 text-center hover:border-b-2 hover:border-black transition-all cursor-pointer">
+            <p className="w-full py-2 text-center hover:border-b-2 hover:border-amber-500 transition-all cursor-pointer">
                 Services
             </p>
         </div>
