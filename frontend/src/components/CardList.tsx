@@ -25,14 +25,14 @@ export const CardList = () => {
                 viewport={{ once: true }}
                 className="text-center mb-16"
             >
-                <div className="flex items-center justify-center mb-4">
-                    <Sparkles className="w-8 h-8 text-purple-300 mr-3 animate-pulse" />
-                    <h2 className="text-5xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+                <div className="flex items-center justify-center mb-4 flex-wrap">
+                    <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-purple-300 mr-2 sm:mr-3 animate-pulse" />
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent text-center">
                         Our Services
                     </h2>
-                    <Sparkles className="w-8 h-8 text-pink-300 ml-3 animate-pulse" />
+                    <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-pink-300 ml-2 sm:ml-3 animate-pulse" />
                 </div>
-                <p className="text-white/70 text-lg max-w-2xl mx-auto">
+                <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto px-4 sm:px-0">
                     Discover powerful AI tools designed to enhance your research and content creation workflow
                 </p>
             </motion.div>

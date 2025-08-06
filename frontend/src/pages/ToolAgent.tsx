@@ -82,13 +82,13 @@ export const ToolAgent = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-8 px-6"
                 >
-                    <div className="flex items-center justify-center mb-4">
-                        <Search className="w-12 h-12 text-green-300 mr-4 animate-pulse" />
-                        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-200 to-teal-200 bg-clip-text text-transparent">
+                    <div className="flex items-center justify-center mb-4 flex-wrap">
+                        <Search className="w-10 h-10 sm:w-12 sm:h-12 text-green-300 mr-3 sm:mr-4 animate-pulse" />
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-200 to-teal-200 bg-clip-text text-transparent text-center">
                             WikiArXiv Explorer
                         </h1>
                     </div>
-                    <p className="text-white/70 text-lg max-w-2xl mx-auto">
+                    <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto px-4 sm:px-0">
                         Explore the vast knowledge base of Wikipedia and cutting-edge research from ArXiv with AI-powered search
                     </p>
                 </motion.div>
@@ -141,15 +141,15 @@ export const ToolAgent = () => {
                     transition={{ delay: 0.4 }}
                     className="max-w-4xl mx-auto px-6 pb-8"
                 >
-                    <div className="glass rounded-2xl p-6">
-                        <div className="flex items-start space-x-4">
+                    <div className="glass rounded-2xl p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                             <div className="flex-1">
                                 <textarea
                                     value={query}
                                     onChange={onChange}
                                     onKeyPress={handleKeyPress}
                                     placeholder="Ask me anything about Wikipedia topics or ArXiv research papers..."
-                                    className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent resize-none transition-all duration-300"
+                                    className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent resize-none transition-all duration-300 min-h-[48px]"
                                     rows={2}
                                     disabled={isThinking}
                                 />
@@ -161,12 +161,12 @@ export const ToolAgent = () => {
                             <button
                                 onClick={handleSubmit}
                                 disabled={!query.trim() || isThinking}
-                                className="px-6 py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 shadow-lg hover:shadow-green-500/25"
+                                className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 shadow-lg hover:shadow-green-500/25 min-h-[48px] touch-manipulation"
                             >
                                 {isThinking ? (
-                                    <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
+                                    <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full mx-auto" />
                                 ) : (
-                                    <Send className="w-5 h-5" />
+                                    <Send className="w-5 h-5 mx-auto sm:mx-0" />
                                 )}
                             </button>
                         </div>

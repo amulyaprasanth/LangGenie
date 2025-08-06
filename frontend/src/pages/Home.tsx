@@ -1,6 +1,7 @@
 import {CardList} from "../components/CardList.tsx";
 import { motion } from "framer-motion";
 import { Brain, Sparkles, Zap, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
     return (
@@ -43,20 +44,20 @@ export const Home = () => {
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="flex items-center justify-center mb-6"
+                        className="flex items-center justify-center mb-6 flex-wrap sm:flex-nowrap"
                     >
-                        <Brain className="w-16 h-16 text-purple-300 mr-4 animate-pulse" />
-                        <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent">
+                        <Brain className="w-12 h-12 sm:w-16 sm:h-16 text-purple-300 mr-2 sm:mr-4 animate-pulse" />
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent text-center sm:text-left">
                             LangGenie
                         </h1>
-                        <Sparkles className="w-12 h-12 text-pink-300 ml-4 animate-bounce" />
+                        <Sparkles className="w-8 h-8 sm:w-12 sm:h-12 text-pink-300 ml-2 sm:ml-4 animate-bounce" />
                     </motion.div>
                     
                     <motion.h2
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-2xl md:text-3xl font-light text-white/80 mb-8"
+                        className="text-xl sm:text-2xl md:text-3xl font-light text-white/80 mb-6 sm:mb-8 px-4 sm:px-0"
                     >
                         Unlock Knowledge with AI-Powered Tools
                     </motion.h2>
@@ -65,7 +66,7 @@ export const Home = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-lg text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed"
+                        className="text-base sm:text-lg text-white/70 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4 sm:px-0"
                     >
                         Transform documents into speeches, articles, and blogs. Generate compelling content from your PDFs with advanced AI capabilities.
                     </motion.p>
@@ -76,18 +77,18 @@ export const Home = () => {
                         transition={{ duration: 0.8, delay: 0.6 }}
                         className="flex flex-wrap justify-center gap-4"
                     >
-                        <button className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25">
+                        <Link to="/get-started" className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25">
                             <span className="flex items-center">
                                 <Zap className="w-5 h-5 mr-2 group-hover:animate-spin" />
                                 Get Started
                             </span>
-                        </button>
-                        <button className="px-8 py-4 glass text-white font-semibold rounded-full hover:scale-105 transition-all duration-300">
+                        </Link>
+                        <Link to="/learn-more" className="px-8 py-4 glass text-white font-semibold rounded-full hover:scale-105 transition-all duration-300">
                             <span className="flex items-center">
                                 <BookOpen className="w-5 h-5 mr-2" />
                                 Learn More
                             </span>
-                        </button>
+                        </Link>
                     </motion.div>
                 </div>
 
@@ -114,9 +115,9 @@ export const Home = () => {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h3 className="text-4xl font-bold text-white mb-6">About LangGenie</h3>
-                        <div className="glass p-8 rounded-2xl">
-                            <p className="text-lg text-white/80 leading-relaxed max-w-4xl mx-auto">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6">About LangGenie</h3>
+                        <div className="glass p-4 sm:p-6 lg:p-8 rounded-2xl">
+                            <p className="text-base sm:text-lg text-white/80 leading-relaxed max-w-4xl mx-auto">
                                 LangGenie is an AI-powered research platform designed to revolutionize the way you access and explore information. 
                                 With advanced tools for PDF processing, Wiki & ArXiv integration, and intelligent content generation, 
                                 LangGenie transforms complex documents into engaging speeches, comprehensive articles, and compelling blog posts. 

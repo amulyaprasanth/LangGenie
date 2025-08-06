@@ -27,7 +27,7 @@ export const Card = ({title, description, link}: CardProps) => {
             viewport={{ once: true }}
             className="group relative w-full h-full"
         >
-            <div className="glass rounded-2xl p-8 h-full relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20">
+            <div className="glass rounded-2xl p-6 sm:p-8 h-full relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20">
                 {/* Gradient overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
                 
@@ -39,19 +39,19 @@ export const Card = ({title, description, link}: CardProps) => {
                     </div>
                     
                     {/* Title */}
-                    <h3 className="text-white font-bold text-2xl mb-4 group-hover:bg-gradient-to-r group-hover:from-purple-200 group-hover:to-pink-200 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    <h3 className="text-white font-bold text-xl sm:text-2xl mb-4 group-hover:bg-gradient-to-r group-hover:from-purple-200 group-hover:to-pink-200 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                         {title}
                     </h3>
                     
                     {/* Description */}
-                    <p className="text-white/70 text-base mb-6 leading-relaxed">
+                    <p className="text-white/70 text-sm sm:text-base mb-6 leading-relaxed">
                         {description}
                     </p>
                     
                     {/* Button */}
                     <Link
                         to={link}
-                        className="group/button inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
+                        className="group/button inline-flex items-center px-6 py-3 sm:px-6 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 min-h-[44px] touch-manipulation"
                     >
                         <span>Try It Now</span>
                         <ArrowRight className="ml-2 w-4 h-4 group-hover/button:translate-x-1 transition-transform duration-300" />
