@@ -5,9 +5,8 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM busybox:1.35
-RUN adduser -D static
-USER static
-WORKDIR /home/static
-COPY --from=build-stage /app/dist .
-CMD ["busybox", "httpd", "-f", "-v", "-p", "8080"]
+FROM nginx:alpine
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

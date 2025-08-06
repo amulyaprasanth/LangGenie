@@ -41,17 +41,20 @@ class ToolAgent:
         # Initialize the language model
         self.llm = ChatOllama(model="llama3.1", base_url="http://ollama:11434")
 
-    def invoke_agent(self, query: str) -> dict:
+    def invoke_agent(self, query) -> dict:
         """
         Invokes the agent with the provided query.
 
         Args:
-            query (str): The input query to be processed by the agent.
+            query: The input query to be processed by the agent (can be string or Query object).
 
         Returns:
             dict: The response from the agent after processing the query.
         """
         try:
+            # Extract the question string from the query object if needed
+            query_text = query.question if hasattr(query, 'question') else str(query)
+            
             # Create the agent using the LLM, tools, and prompt
             agent = create_tool_calling_agent(self.llm, self.tools, self.prompt)
 
@@ -66,7 +69,7 @@ class ToolAgent:
             )
 
             # Invoke the agent with the provided query
-            return agent_executor.invoke({"input": query})
+            return agent_executor.invoke({"input": query_text})
         except Exception as e:
             print(f"An error occurred while invoking the agent: {e}")
             return {"error": str(e)}

@@ -84,24 +84,53 @@ class RagPdf:
         vector_store = FAISS.from_documents(split_documents, self.embeddings)
         return vector_store.as_retriever()
 
-    def create_chain(self, retriever):
+    def create_chain(self, retriever, content_type="qa"):
         """
         Creates a RetrievalQA chain using the loaded documents and the specified language model.
 
         Args:
             retriever (VectorStoreRetriever): The retriever for accessing the vector store.
+            content_type (str): Type of content to generate - "qa", "speech", "article", or "blog".
 
         Returns:
             RetrievalQA: The configured RetrievalQA chain.
         """
-        # Creating Prompt
-        prompt_template: str = (
-            "Use the following pieces of context to answer the question at the end. "
-            "If you don't know the answer, just say that you don't know; don't try to make up an answer.\n\n"
-            "{context}\n\n"
-            "Question: {question}\n"
-            "Provide a concise answer in 1-4 sentences:"
-        )
+        # Creating different prompt templates based on content type
+        if content_type == "speech":
+            prompt_template = (
+                "Based on the following document content, create an engaging speech that addresses the user's request. "
+                "Structure your speech with a compelling opening, main points with supporting evidence from the document, "
+                "and a memorable conclusion. Use rhetorical devices and vary sentence length for impact.\n\n"
+                "Document Content:\n{context}\n\n"
+                "Speech Request: {question}\n\n"
+                "Generate a well-structured, engaging speech:"
+            )
+        elif content_type == "article":
+            prompt_template = (
+                "Using the provided document content, write a comprehensive article that addresses the user's request. "
+                "Include a compelling headline, introduction, body paragraphs with subheadings, and conclusion. "
+                "Maintain a professional, informative tone and cite relevant information from the source material.\n\n"
+                "Source Material:\n{context}\n\n"
+                "Article Request: {question}\n\n"
+                "Write a well-researched, structured article:"
+            )
+        elif content_type == "blog":
+            prompt_template = (
+                "Based on the document content provided, create an engaging blog post that addresses the user's topic. "
+                "Write in a conversational, accessible tone with a catchy title, engaging introduction, "
+                "well-organized main content, and a call-to-action conclusion. Include relevant examples and insights from the source.\n\n"
+                "Reference Material:\n{context}\n\n"
+                "Blog Topic: {question}\n\n"
+                "Create an engaging, informative blog post:"
+            )
+        else:  # Default QA mode
+            prompt_template = (
+                "Use the following pieces of context to answer the question at the end. "
+                "If you don't know the answer, just say that you don't know; don't try to make up an answer.\n\n"
+                "{context}\n\n"
+                "Question: {question}\n"
+                "Provide a concise answer in 1-4 sentences:"
+            )
 
         prompt: PromptTemplate = PromptTemplate(
             template=prompt_template, input_variables=["context", "question"]

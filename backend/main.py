@@ -3,8 +3,7 @@ from typing import Optional
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from source.rag import RagPdf
-from source.tool_agent import  ToolAgent
+from source.tool_agent import ToolAgent
 app = FastAPI()
 
 # Add CORS middleware
@@ -32,6 +31,7 @@ class Message(BaseModel):
 
 class Query(BaseModel):
     question: str
+    content_type: str = "qa"  # Default to Q&A mode
 
 
 @app.post("/echo")
@@ -68,8 +68,8 @@ async def query(question: Query):
             raise HTTPException(
                 status_code=400, detail="Please upload a file first")
 
-        # Create a chain
-        chain = rag_pdf.create_chain(retriever)
+        # Create a chain with the specified content type
+        chain = rag_pdf.create_chain(retriever, question.content_type)
 
         # Invoke the chain with the question
         answer = rag_pdf.invoke_chain(chain, question.question)

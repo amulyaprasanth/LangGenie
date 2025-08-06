@@ -1,12 +1,24 @@
 import {Upload} from "../components/Upload";
 import {ChatContainer} from "../components/ChatContainer";
 import {ChangeEvent, KeyboardEvent, useState, useEffect, useRef} from "react";
+import { motion } from "framer-motion";
+import { Send, FileText, MessageSquare, Presentation, PenTool, Brain } from "lucide-react";
 import axios from "axios";
 
 export interface Message {
-    role: 'user' | 'bot'; // Restricting role to 'user' or 'bot'
+    role: 'user' | 'bot';
     message: string;
     time: string;
+}
+
+type ContentType = 'qa' | 'speech' | 'article' | 'blog';
+
+interface ContentTypeOption {
+    value: ContentType;
+    label: string;
+    icon: React.ReactNode;
+    description: string;
+    placeholder: string;
 }
 
 export const RagChain = () => {
@@ -14,7 +26,39 @@ export const RagChain = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [isFileUploaded, setIsFileUploaded] = useState<boolean>(false);
     const [isThinking, setIsThinking] = useState<boolean>(false);
+    const [contentType, setContentType] = useState<ContentType>('qa');
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const contentTypeOptions: ContentTypeOption[] = [
+        {
+            value: 'qa',
+            label: 'Q&A',
+            icon: <MessageSquare className="w-5 h-5" />,
+            description: 'Ask questions about your document',
+            placeholder: 'Ask a question about your document...'
+        },
+        {
+            value: 'speech',
+            label: 'Speech',
+            icon: <Presentation className="w-5 h-5" />,
+            description: 'Generate engaging speeches from your content',
+            placeholder: 'Describe the speech you want to generate...'
+        },
+        {
+            value: 'article',
+            label: 'Article',
+            icon: <FileText className="w-5 h-5" />,
+            description: 'Create comprehensive articles',
+            placeholder: 'What kind of article would you like to create?...'
+        },
+        {
+            value: 'blog',
+            label: 'Blog Post',
+            icon: <PenTool className="w-5 h-5" />,
+            description: 'Write engaging blog posts',
+            placeholder: 'What blog post topic would you like to explore?...'
+        }
+    ];
 
     useEffect(() => {
         if (containerRef.current) {
@@ -22,14 +66,14 @@ export const RagChain = () => {
         }
     }, [messages, isThinking]);
 
-    function onChange(e: ChangeEvent<HTMLInputElement>) {
+    function onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         if (e.target) {
             setQuery(e.target.value);
         }
     }
 
-    const queryBackend = async (query: string) => {
-        if (!query) return;
+    const queryBackend = async (query: string, selectedContentType: ContentType = contentType) => {
+        if (!query.trim()) return;
 
         const userMessage: Message = {
             role: "user",
@@ -41,7 +85,10 @@ export const RagChain = () => {
         setIsThinking(true);
 
         try {
-            const response = await axios.post("http://localhost:8000/query", {"question": query});
+            const response = await axios.post("http://localhost:8000/query", {
+                "question": query,
+                "content_type": selectedContentType
+            });
             const assistantMessage: Message = {
                 role: "bot",
                 message: response.data.answer,
@@ -52,17 +99,18 @@ export const RagChain = () => {
             console.error("Error occurred while querying the backend:", error);
         } finally {
             setIsThinking(false);
-            setQuery(""); // Clear the input field after sending the query
+            setQuery("");
         }
     };
 
-    const handleClick = () => {
-        queryBackend(query);
+    const handleSubmit = () => {
+        queryBackend(query, contentType);
     };
 
-    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            queryBackend(query);
+    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit();
         }
     };
 
@@ -70,36 +118,137 @@ export const RagChain = () => {
         setIsFileUploaded(true);
     };
 
+    const currentOption = contentTypeOptions.find(option => option.value === contentType)!;
+
     return (
-        <div className="bg-slate-800 pt-10 min-h-screen w-screen text-center">
-            <div id="file-upload" className="">
-                <h1 className="text-2xl">DocQnA</h1>
-                <p className="m-5">Upload a PDF page, and then you can ask questions about it using the LLaMA 3.1
-                    model.</p>
-                <Upload onFileUpload={handleFileUpload}/>
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative">
+            {/* Background decorations */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute top-1/4 -left-4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
+                <div className="absolute bottom-1/4 -right-4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
             </div>
-            <div className="mt-5" ref={containerRef}>
-                <ChatContainer messages={messages}
-                               isThinking={isThinking}/> {/* Pass messages and isThinking to ChatContainer */}
-            </div>
-            {isFileUploaded && (
-                <div className="mt-5">
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={onChange}
-                        onKeyPress={handleKeyPress}
-                        placeholder="Ask a question..."
-                        className="border p-2 rounded w-1/2"
-                    />
-                    <button
-                        onClick={handleClick}
-                        className="p-2 px-5 ml-2 bg-blue-800 hover:bg-blue-500 text-white rounded"
+
+            <div className="relative z-10 pt-10 min-h-screen">
+                {/* Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-8 px-6"
+                >
+                    <div className="flex items-center justify-center mb-4">
+                        <Brain className="w-12 h-12 text-purple-300 mr-4 animate-pulse" />
+                        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+                            AI Content Generator
+                        </h1>
+                    </div>
+                    <p className="text-white/70 text-lg max-w-2xl mx-auto">
+                        Upload a PDF and transform it into engaging content - from Q&A sessions to speeches, articles, and blog posts
+                    </p>
+                </motion.div>
+
+                {/* Upload Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="max-w-4xl mx-auto px-6 mb-8"
+                >
+                    <div className="glass rounded-2xl p-6">
+                        <Upload onFileUpload={handleFileUpload}/>
+                    </div>
+                </motion.div>
+
+                {/* Content Type Selection */}
+                {isFileUploaded && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="max-w-4xl mx-auto px-6 mb-8"
                     >
-                        Ask
-                    </button>
-                </div>
-            )}
+                        <div className="glass rounded-2xl p-6">
+                            <h3 className="text-white text-xl font-semibold mb-4 text-center">Choose Content Type</h3>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                {contentTypeOptions.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        onClick={() => setContentType(option.value)}
+                                        className={`p-4 rounded-xl transition-all duration-300 text-center relative overflow-hidden ${
+                                            contentType === option.value
+                                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
+                                                : 'glass-dark text-white/70 hover:text-white hover:scale-105'
+                                        }`}
+                                    >
+                                        <div className="relative z-10">
+                                            <div className="flex justify-center mb-2">
+                                                {option.icon}
+                                            </div>
+                                            <div className="font-semibold text-sm mb-1">{option.label}</div>
+                                            <div className="text-xs opacity-75">{option.description}</div>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* Chat Container */}
+                {isFileUploaded && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="max-w-4xl mx-auto px-6 mb-8"
+                        ref={containerRef}
+                    >
+                        <div className="glass rounded-2xl p-6">
+                            <ChatContainer messages={messages} isThinking={isThinking}/>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* Input Section */}
+                {isFileUploaded && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                        className="max-w-4xl mx-auto px-6 pb-8"
+                    >
+                        <div className="glass rounded-2xl p-6">
+                            <div className="flex items-start space-x-4">
+                                <div className="flex-1">
+                                    <textarea
+                                        value={query}
+                                        onChange={onChange}
+                                        onKeyPress={handleKeyPress}
+                                        placeholder={currentOption.placeholder}
+                                        className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent resize-none transition-all duration-300"
+                                        rows={contentType === 'qa' ? 1 : 3}
+                                        disabled={isThinking}
+                                    />
+                                    <div className="mt-2 text-xs text-white/50 flex items-center">
+                                        {currentOption.icon}
+                                        <span className="ml-2">Current mode: {currentOption.label}</span>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={!query.trim() || isThinking}
+                                    className="px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
+                                >
+                                    {isThinking ? (
+                                        <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
+                                    ) : (
+                                        <Send className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </div>
         </div>
     );
 };

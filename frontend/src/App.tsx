@@ -6,16 +6,16 @@ import {RagChain} from './pages/RagChain';
 
 function App() {
     return (
-        <div>
-            <Navbar/>
-            <Router>
+        <Router>
+            <div>
+                <Navbar/>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/tool" element={<ToolAgent/>}/>
                     <Route path="/rag" element={<RagChain/>}/>
                 </Routes>
-            </Router>
-        </div>
+            </div>
+        </Router>
     );
 }
 
