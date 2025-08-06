@@ -1,8 +1,10 @@
 import React, {useEffect, useRef} from 'react';
-import Bot from "../assets/bot.png";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Bot, User, Copy, ThumbsUp, ThumbsDown } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
-    role: 'user' | 'bot'; // Restricting role to 'user' or 'bot'
+    role: 'user' | 'bot';
     message: string;
     time: string;
 }
@@ -11,6 +13,47 @@ export interface ChatContainerProps {
     messages: Message[];
     isThinking: boolean;
 }
+
+const TypingIndicator = () => (
+    <div className="flex items-center space-x-1">
+        <div className="flex space-x-1">
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+        </div>
+        <span className="text-white/60 text-sm ml-3">AI is thinking...</span>
+    </div>
+);
+
+const MessageActions = ({ message }: { message: string }) => {
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(message);
+    };
+
+    return (
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-2 mt-2">
+            <button
+                onClick={copyToClipboard}
+                className="p-1 rounded-md hover:bg-white/10 text-white/60 hover:text-white/80 transition-colors"
+                title="Copy message"
+            >
+                <Copy className="w-4 h-4" />
+            </button>
+            <button
+                className="p-1 rounded-md hover:bg-white/10 text-white/60 hover:text-white/80 transition-colors"
+                title="Good response"
+            >
+                <ThumbsUp className="w-4 h-4" />
+            </button>
+            <button
+                className="p-1 rounded-md hover:bg-white/10 text-white/60 hover:text-white/80 transition-colors"
+                title="Bad response"
+            >
+                <ThumbsDown className="w-4 h-4" />
+            </button>
+        </div>
+    );
+};
 
 export const ChatContainer: React.FC<ChatContainerProps> = ({messages, isThinking}) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -22,41 +65,108 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({messages, isThinkin
     }, [messages, isThinking]);
 
     if (messages.length === 0 && !isThinking) {
-        return null; // Do not render the container if there are no messages and not thinking
+        return (
+            <div className="flex flex-col items-center justify-center h-64 text-center">
+                <Bot className="w-16 h-16 text-purple-300 mb-4 opacity-50" />
+                <p className="text-white/60 text-lg">Start a conversation</p>
+                <p className="text-white/40 text-sm mt-2">Ask me anything about your document...</p>
+            </div>
+        );
     }
 
     return (
-        <div ref={containerRef}
-             className="chat-container p-4 bg-gray-900 rounded-lg shadow-md max-w-2xl mx-auto overflow-y-auto max-h-96">
-            <div className="header text-lg font-bold mb-4 roboto-normal">QnA Bot</div>
-            {messages.map((msg, index) => (
-                <div key={index}
-                     className={`flex items-end gap-2 mb-4 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                    {msg.role === "bot" && (
-                        <img
-                            className="size-8 bg-black p-1 rounded-full object-cover"
-                            src={Bot}
-                            alt="avatar"
-                        />
-                    )}
-                    <div
-                        className={`message-content p-4 rounded-lg ${msg.role === "user" ? "bg-black text-neutral-100 rounded-l-xl rounded-tr-xl" : "bg-blue-800 text-neutral-100 rounded-r-md rounded-tl-md"}`}>
-                        <p className="text-sm">{msg.message}</p>
-                        <span className="text-xs text-gray-300">{msg.time}</span>
-                    </div>
-                    {msg.role === "user" && (
-                        <span
-                            className="flex size-8 items-center justify-center overflow-hidden rounded-full border border-gray-300 bg-gray-50 text-sm font-bold tracking-wider dark:border-neutral-700 dark:bg-white dark:text-neutral-300">
-                            👤
-                        </span>
-                    )}
-                </div>
-            ))}
-            {isThinking && (
-                <div className="thinking-spinner flex justify-center mt-2">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500"></div>
-                </div>
-            )}
+        <div className="flex flex-col h-full">
+            <div 
+                ref={containerRef}
+                className="flex-1 overflow-y-auto space-y-4 px-4 py-6 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent"
+            >
+                <AnimatePresence>
+                    {messages.map((msg, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className={`flex items-start gap-3 group ${
+                                msg.role === "user" ? "flex-row-reverse" : "flex-row"
+                            }`}
+                        >
+                            {/* Avatar */}
+                            <div className={`flex-shrink-0 ${
+                                msg.role === "user" ? "order-2" : "order-1"
+                            }`}>
+                                {msg.role === "bot" ? (
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                                        <Bot className="w-5 h-5 text-white" />
+                                    </div>
+                                ) : (
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                                        <User className="w-5 h-5 text-white" />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Message Content */}
+                            <div className={`flex-1 max-w-[80%] ${
+                                msg.role === "user" ? "order-1" : "order-2"
+                            }`}>
+                                <div className={`rounded-2xl px-4 py-3 ${
+                                    msg.role === "user"
+                                        ? "bg-gradient-to-br from-blue-600 to-blue-700 text-white ml-auto"
+                                        : "glass text-white mr-auto"
+                                }`}>
+                                    <div className="prose prose-invert prose-sm max-w-none">
+                                        <ReactMarkdown
+                                            components={{
+                                                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                                                code: ({ children }) => (
+                                                    <code className="bg-black/20 px-1.5 py-0.5 rounded text-sm font-mono">
+                                                        {children}
+                                                    </code>
+                                                ),
+                                                pre: ({ children }) => (
+                                                    <pre className="bg-black/30 p-3 rounded-lg overflow-x-auto text-sm">
+                                                        {children}
+                                                    </pre>
+                                                ),
+                                            }}
+                                        >
+                                            {msg.message}
+                                        </ReactMarkdown>
+                                    </div>
+                                </div>
+                                
+                                {/* Message Time and Actions */}
+                                <div className={`flex items-center mt-1 text-xs text-white/50 ${
+                                    msg.role === "user" ? "justify-end" : "justify-start"
+                                }`}>
+                                    <span>{msg.time}</span>
+                                </div>
+                                
+                                {/* Bot Message Actions */}
+                                {msg.role === "bot" && <MessageActions message={msg.message} />}
+                            </div>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+
+                {/* Thinking Indicator */}
+                {isThinking && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-start gap-3"
+                    >
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                            <Bot className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="glass rounded-2xl px-4 py-3 mr-auto">
+                            <TypingIndicator />
+                        </div>
+                    </motion.div>
+                )}
+            </div>
         </div>
     );
 };

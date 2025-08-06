@@ -124,22 +124,81 @@ button:focus-visible {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling - Chainlit-style */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 4px;
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* Tailwind scrollbar utilities */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-purple-500\/20 {
+  scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
+}
+
+.scrollbar-track-transparent {
+  scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
+}
+
+/* Prose styling for markdown */
+.prose-invert {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3,
+.prose-invert h4,
+.prose-invert h5,
+.prose-invert h6 {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.prose-invert strong {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+.prose-invert code {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.prose-invert pre {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.prose-invert ul,
+.prose-invert ol {
+  margin-left: 1.5em;
+}
+
+.prose-invert blockquote {
+  border-left: 4px solid rgba(139, 92, 246, 0.5);
+  padding-left: 1rem;
+  margin-left: 0;
+  font-style: italic;
+  opacity: 0.8;
 }
 
 @tailwind base;
